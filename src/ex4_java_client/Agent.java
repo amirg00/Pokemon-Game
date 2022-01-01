@@ -4,14 +4,18 @@ import api.GeoLocation;
 
 public class Agent {
 
-    private int id,src,dest;
-    private double value,speed;
+    private int id, src, dest;
+    private double value, speed;
     private GeoLocation pos;
 
-
-
-
-
+    public Agent(int id, int src, int dest, double value, double speed, GeoLocation pos) {
+        this.id = id;
+        this.src = src;
+        this.dest = dest;
+        this.value = value;
+        this.speed = speed;
+        this.pos = pos;
+    }
 
     /******** getters and setters *********/
 
