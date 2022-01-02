@@ -8,7 +8,9 @@ public class Agent {
     private double value, speed;
     private GeoLocation pos;
 
-    public Agent(int id, int src, int dest, double value, double speed, GeoLocation pos) {
+    /******** Constructor *********/
+
+    public Agent(int id, double value, int src, int dest, double speed, GeoLocation pos) {
         this.id = id;
         this.src = src;
         this.dest = dest;
@@ -17,7 +19,7 @@ public class Agent {
         this.pos = pos;
     }
 
-    /******** getters and setters *********/
+    /******** Getters & Setters *********/
 
     public GeoLocation getPos() {
         return pos;

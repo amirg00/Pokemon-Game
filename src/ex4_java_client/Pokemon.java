@@ -10,14 +10,17 @@ public class Pokemon {
 
 
 
+    /******** Constructor *********/
+
+    public Pokemon(double value, int type, GeoLocation pos){
+        this.value = value;
+        this.type = type;
+        this.pos = pos;
+    }
 
 
 
-
-
-
-
-    /******** getters and setters *********/
+    /******** Getters & Setters *********/
 
     public double getValue() {
         return value;
