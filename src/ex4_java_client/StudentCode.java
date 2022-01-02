@@ -22,7 +22,8 @@ public class StudentCode {
         System.out.println(pokemonsStr);
         String isRunningStr = client.isRunning();
         System.out.println(isRunningStr);
-
+        String info = client.getInfo();
+        System.out.println(info);
         client.start();
 
         while (client.isRunning().equals("true")) {
