@@ -3,6 +3,8 @@ package ex4_java_client;
 import api.*;
 import org.json.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class Stage {
@@ -13,24 +15,40 @@ public class Stage {
     private ArrayList<Pokemon> pokemons;
     private ArrayList<Agent> agents;
     private Client game;
+    private int agents_num;
 
     public Stage (Client game){
         algo = new DirectedWeightedGraphAlgorithmsImpl();
         this.game = game;
-
+        setStageProps(game);
         initStageGraph(game.getGraph());
-        initAgents(game.getAgents());
         initPokemons(game.getPokemons());
+        initPokemonsEdge();
+        pokemons.sort(Comparator.comparingDouble(Pokemon::getValue));
         algo.init(map);
-
-
+        initAgents();
+        updateAgents(game.getAgents());
     }
 
 
 
 
+    public void initPokemonsEdge(){
+        for(Pokemon pokemon : pokemons){
+            pokemon.updateEdge(map);
+        }
+    }
 
-
+    /**
+     * The method initializes the game's properties, such as: agents number, stage number.
+     * @param client gets a client reference, which communicates with the server.
+     */
+    public void setStageProps(Client client){
+        String info = client.getInfo();
+        JSONObject obj = new JSONObject(info);
+        JSONObject game_details = obj.getJSONObject("GameServer");
+        agents_num = game_details.getInt("agents");
+    }
 
     public void initStageGraph(String json){
         map = new DirectedWeightedGraphImpl(new HashMap<>(), new HashMap<>());
@@ -61,9 +79,22 @@ public class Stage {
 
     }
 
+    /**
+     * if type = 1 -> low to high
+     * else type = -1 -> high to low.
+     */
+    public void initAgents() {
+        for (int i = agents_num; i >= 0; i--) {
+             Pokemon poke = pokemons.get(i);
+             EdgeData poke_edge = poke.getCurrEdge();
+             int src = poke_edge.getSrc();
+             int dst = poke_edge.getDest();
+             int nodeNum = poke.getType() == 1 ? Math.min(src, dst): Math.max(src, dst);
+             game.addAgent("{\"id\":"+nodeNum+'}');
+        }
+    }
 
-
-    public void initAgents(String json){
+    public void updateAgents(String json){
         agents = new ArrayList<>();
         JSONObject obj = new JSONObject(json);
         JSONArray agents = obj.getJSONArray("Agents");

@@ -2,41 +2,63 @@ package ex4_java_client; /**
  * @author AchiyaZigi
  * A trivial example for starting the server and running all needed commands
  */
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.Scanner;
 
-public class StudentCode {
+public class StudentCode implements Runnable {
+    private static Client client;
+    private static long id;
+    private static int lvl, agents_num, pokes_num;
+
     public static void main(String[] args) {
-        Client client = new Client();
+        client = new Client();
         try {
             client.startConnection("127.0.0.1", 6666);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String graphStr = client.getGraph();
-        System.out.println(graphStr);
-        client.addAgent("{\"id\":0}");
-        String agentsStr = client.getAgents();
-        System.out.println(agentsStr);
-        String pokemonsStr = client.getPokemons();
-        System.out.println(pokemonsStr);
-        String isRunningStr = client.isRunning();
-        System.out.println(isRunningStr);
-        String info = client.getInfo();
-        System.out.println(info);
-        client.start();
+        Thread player = new Thread(new StudentCode());
+        player.start();
+    }
 
-        while (client.isRunning().equals("true")) {
-            client.move();
-            System.out.println(client.getAgents());
-            System.out.println(client.timeToEnd());
 
-            Scanner keyboard = new Scanner(System.in);
-            System.out.println("enter the next dest: ");
-            int next = keyboard.nextInt();
-            client.chooseNextEdge("{\"agent_id\":0, \"next_node_id\": " + next + "}");
-
+    public static void login(){
+        String temp = String.valueOf(id);
+        String id_new = "";
+        if(id == -1 || temp.length() != 9) {
+            System.out.println("Please Enter your ID");
+        }else{
+            id = Long.parseLong(id_new);
         }
     }
 
+
+    /**
+     * The method initializes the game's properties, such as: typed player's id, stage number, etc...
+     * @param client gets a client reference, which communicates with the server.
+     */
+    public void setStageProps(Client client){
+        String info = client.getInfo();
+        JSONObject obj = new JSONObject(info);
+
+        id = obj.getInt("id");
+        lvl = obj.getInt("game_level");
+        pokes_num = obj.getInt("pokemons");
+        agents_num = obj.getInt("agents");
+    }
+
+
+    @Override
+    public void run() {
+
+
+
+        setStageProps(client);
+        login();
+        Stage stage = new Stage(client);
+        client.start();
+
+    }
 }

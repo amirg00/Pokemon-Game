@@ -1,12 +1,19 @@
 package ex4_java_client;
 
+import api.DirectedWeightedGraph;
 import api.GeoLocation;
+import api.NodeData;
+
+import java.util.ArrayList;
 
 public class Agent {
 
     private int id, src, dest;
     private double value, speed;
     private GeoLocation pos;
+    private ArrayList<NodeData> path;
+    private DirectedWeightedGraph graph;
+
 
     /******** Constructor *********/
 
@@ -17,6 +24,10 @@ public class Agent {
         this.value = value;
         this.speed = speed;
         this.pos = pos;
+    }
+
+    public Agent(DirectedWeightedGraph g, int startNode){
+
     }
 
     /******** Getters & Setters *********/
