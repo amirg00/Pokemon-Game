@@ -3,6 +3,7 @@ package ex4_java_client; /**
  * A trivial example for starting the server and running all needed commands
  */
 
+import GUI.FrameGraph;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.io.IOException;
 public class StudentCode implements Runnable {
     private static Client client;
     private static long id;
-    private static int lvl, agents_num, pokes_num;
+    private FrameGraph world;
 
     public static void main(String[] args) {
         client = new Client();
@@ -35,28 +36,13 @@ public class StudentCode implements Runnable {
     }
 
 
-    /**
-     * The method initializes the game's properties, such as: typed player's id, stage number, etc...
-     *
-     * @param client gets a client reference, which communicates with the server.
-     */
-    public void setStageProps(Client client) {
-        String info = client.getInfo();
-        JSONObject obj = new JSONObject(info);
-
-        id = obj.getInt("id");
-        lvl = obj.getInt("game_level");
-        pokes_num = obj.getInt("pokemons");
-        agents_num = obj.getInt("agents");
-    }
-
 
     @Override
     public void run() {
-
         //setStageProps(client);
         //login();
         StageController stageController = new StageController(client);
+        world = new FrameGraph(stageController.getMap());
         client.start();
         int frames = 0;
 
@@ -65,6 +51,7 @@ public class StudentCode implements Runnable {
         while (client.isRunning().equals("true")) {
             stageController.moveAgents();
             stageController.checkIfNear();
+            world.repaint();
             int gdt = stageController.getDiffTime();
             System.out.println(client.getAgents());
             try{

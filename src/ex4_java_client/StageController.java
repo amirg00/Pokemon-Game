@@ -213,4 +213,8 @@ public class StageController {
     public int getDiffTime() {return diffTime;}
 
     public void setDiffTime(int diffTime) {this.diffTime = diffTime;}
+
+    public DirectedWeightedGraph getMap() {
+        return map;
+    }
 }
