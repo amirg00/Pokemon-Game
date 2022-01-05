@@ -14,7 +14,7 @@ public class Pokemon {
     private int type;
     private GeoLocation pos;
     private EdgeData currEdge;
-
+    private double dist;
 
 
     /******** Constructor *********/
@@ -27,7 +27,7 @@ public class Pokemon {
 
     /**
      *
-     * @param graph a given graph.
+     * @param graph the stage graph.
      */
     public void updateEdge(DirectedWeightedGraph graph){
         Iterator<EdgeData> edges = graph.edgeIter();
@@ -40,9 +40,9 @@ public class Pokemon {
     }
 
     /**
-     *
-     * @param edge
-     * @param graph
+     * The method checks whether the current pokemon is onto the edge (i.e. whithin epsilon enviroment).
+     * @param edge a certain edge.
+     * @param graph the stage graph.
      * @return
      */
     public boolean isOnEdge(EdgeData edge, DirectedWeightedGraph graph){
@@ -53,7 +53,7 @@ public class Pokemon {
             return false;
         }
 
-        if (type == -1 && destNode.getKey() < srcNode.getKey()){
+        if (type == -1 && destNode.getKey() > srcNode.getKey()){
             return false;
         }
 
@@ -96,4 +96,18 @@ public class Pokemon {
     public void setValue(double value) {
         this.value = value;
     }
+
+    public double getDist() {
+        return dist;
+    }
+
+    public void setDist(double dist) {
+        this.dist = dist;
+    }
+    /************* Equals ***************/
+
+    public boolean equals(Pokemon other){
+        return this.getCurrEdge().equals(other.getCurrEdge());
+    }
+
 }

@@ -2,10 +2,10 @@ package ex4_java_client; /**
  * @author AchiyaZigi
  * A trivial example for starting the server and running all needed commands
  */
+
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class StudentCode implements Runnable {
     private static Client client;
@@ -24,12 +24,12 @@ public class StudentCode implements Runnable {
     }
 
 
-    public static void login(){
+    public static void login() {
         String temp = String.valueOf(id);
         String id_new = "";
-        if(id == -1 || temp.length() != 9) {
+        if (id == -1 || temp.length() != 9) {
             System.out.println("Please Enter your ID");
-        }else{
+        } else {
             id = Long.parseLong(id_new);
         }
     }
@@ -37,9 +37,10 @@ public class StudentCode implements Runnable {
 
     /**
      * The method initializes the game's properties, such as: typed player's id, stage number, etc...
+     *
      * @param client gets a client reference, which communicates with the server.
      */
-    public void setStageProps(Client client){
+    public void setStageProps(Client client) {
         String info = client.getInfo();
         JSONObject obj = new JSONObject(info);
 
@@ -53,12 +54,30 @@ public class StudentCode implements Runnable {
     @Override
     public void run() {
 
-
-
-        setStageProps(client);
-        login();
-        Stage stage = new Stage(client);
+        //setStageProps(client);
+        //login();
+        StageController stageController = new StageController(client);
         client.start();
+        int frames = 0;
+
+
+        // Game loop
+        while (client.isRunning().equals("true")) {
+            stageController.moveAgents();
+            stageController.checkIfNear();
+            int gdt = stageController.getDiffTime();
+            System.out.println(client.getAgents());
+            try{
+                Thread.sleep(gdt);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            frames++;
+        }
+
+
+
 
     }
 }

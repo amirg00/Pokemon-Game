@@ -8,12 +8,10 @@ import java.util.ArrayList;
 
 public class Agent {
 
+    private final double EPSILON = .001;
     private int id, src, dest;
     private double value, speed;
     private GeoLocation pos;
-    private ArrayList<NodeData> path;
-    private DirectedWeightedGraph graph;
-
 
     /******** Constructor *********/
 
@@ -26,8 +24,21 @@ public class Agent {
         this.pos = pos;
     }
 
-    public Agent(DirectedWeightedGraph g, int startNode){
+    /**
+     * @return true iff the agent is on the way to catch a pokemon, o.w. return false.
+     */
+    public boolean isOnWay() { return dest != -1;}
 
+    /**
+     *
+     * @param poke a certain given pokemon.
+     * @return true iff the given pokemon close to the current agent (i.e. if agent is whithin
+     * epsilon enviroment of the given pokemon).
+     */
+    public boolean isCloseToPokemon(Pokemon poke){
+        return poke.getCurrEdge().getSrc() == src
+            && poke.getCurrEdge().getDest() == dest
+            && pos.distance(poke.getPos()) < EPSILON * speed;
     }
 
     /******** Getters & Setters *********/
