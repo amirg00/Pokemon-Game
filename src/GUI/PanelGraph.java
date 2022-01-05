@@ -55,6 +55,11 @@ public class PanelGraph extends JPanel {
         g2d = (Graphics2D) g.create();
         FontMetrics fm = g2d.getFontMetrics();
         insets = fm.getHeight() + radius;
+
+        // background:
+        Image background = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/GUI/Icons/background.png"));
+        g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
+
         ArrayList<String> LineSave = new ArrayList<>();
         for (GraphEdge ed : edges) {
             ArrayList<GraphPoint> p = ed.getPoints();

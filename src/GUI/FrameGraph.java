@@ -146,6 +146,8 @@ public class FrameGraph extends JFrame implements ActionListener {
         gitIcon = new ImageIcon("src\\GraphGui\\Icons\\git.png");
         main_menuBar = Toolkit.getDefaultToolkit().getImage("src\\GraphGui\\Icons\\logo.png");
 
+
+
         this.setIconImage(main_menuBar);
         loadMenu.setIcon(loadIcon);
         saveItem.setIcon(saveIcon);
