@@ -1,29 +1,26 @@
-package GUI;
+package GraphGui;
 
 import api.DirectedWeightedGraph;
-import api.GeoLocationImpl;
-import api.NodeDataImpl;
+import api.NodeData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Vertex_UI_add extends JFrame implements ActionListener {
+public class Vertex_UI_remove extends JFrame implements ActionListener {
+    private JTextField node_id;
     private JButton Add;
     private JButton Cancel;
-    private JPanel VertexUI;
-    private JTextField node_id;
-    private JTextField positionX;
-    private JTextField positionY;
+    private JPanel remove_vertex;
     private DirectedWeightedGraph graph;
     private FrameGraph frame;
 
 
-    public Vertex_UI_add(DirectedWeightedGraph graph, FrameGraph frame){
+    public Vertex_UI_remove(DirectedWeightedGraph graph, FrameGraph frame) {
         Image icon = Toolkit.getDefaultToolkit().getImage("src\\GraphGui\\Icons\\logo.png");
         this.setIconImage(icon);
-        this.setContentPane(VertexUI);
+        this.setContentPane(remove_vertex);
         this.graph = graph;
         this.frame = frame;
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -35,26 +32,30 @@ public class Vertex_UI_add extends JFrame implements ActionListener {
         Cancel.addActionListener(this);
         Add.addActionListener(this);
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == Cancel){this.dispose();}
+        if (e.getSource() == Cancel) {
+            this.dispose();
+        }
 
-        if (e.getSource() == Add){ addVertex();}
-
+        if (e.getSource() == Add) {
+            removeVertex();
+        }
     }
 
-    public void addVertex(){
-
+    public void removeVertex() {
         int key = Integer.parseInt(node_id.getText());
-        double posX = Double.parseDouble(positionX.getText());
-        double posy = Double.parseDouble(positionY.getText());
-        System.out.println("id: "+key + "\n" + "pos x: "+posX+","+"\npos y: "+posy);
-        String info = "id:"+key + "\n" + "pos:"+posX+","+posy+",0.0";
-        graph.addNode(new NodeDataImpl(key, 0,info,0,new GeoLocationImpl(posX,posy,0.0)));
-        this.dispose();
-        frame.dispose();
-        new FrameGraph(graph);
+        NodeData removedNode = this.graph.removeNode(key);
+
+        if (removedNode != null) {
+            this.dispose();
+            frame.dispose();
+            new FrameGraph(this.graph);
+        } else {
+            new Invalid_Vertex_UI();
+        }
     }
     /**
      * This method centre the new window opening.

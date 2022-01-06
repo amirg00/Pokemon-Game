@@ -1,4 +1,4 @@
-package GUI;
+package GraphGui;
 
 import api.DirectedWeightedGraph;
 import api.GeoLocation;

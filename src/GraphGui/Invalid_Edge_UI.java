@@ -1,31 +1,40 @@
-package GUI;
+package GraphGui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TSPResponse extends JFrame implements ActionListener {
-    private JPanel ConnectedResponse;
-    private JButton closeButton;
+public class Invalid_Edge_UI extends JFrame implements ActionListener {
+    private ImageIcon ERROR;
+    private Image ERROR_MenuBar;
+
+    private JButton close;
+    private JPanel invalid_edge_pane;
     private JLabel label;
-    private ImageIcon icon;
-    private Image icon_MenuBar;
 
+    public Invalid_Edge_UI(){
 
-    public TSPResponse(){
-        this.setContentPane(ConnectedResponse);
-        icon = new ImageIcon("src\\GraphGui\\Icons\\green_v.png");
-        icon_MenuBar = Toolkit.getDefaultToolkit().getImage("src\\GraphGui\\Icons\\ExclamationCircle.png");
-        this.setIconImage(icon_MenuBar);
-        label.setIcon(icon);
+        this.setContentPane(invalid_edge_pane);
+        ERROR = new ImageIcon("src\\GraphGui\\Icons\\ERROR.png");
+        ERROR_MenuBar = Toolkit.getDefaultToolkit().getImage("src\\GraphGui\\Icons\\ERROR.png");
+        this.setIconImage(ERROR_MenuBar);
+        label.setIcon(ERROR);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         centreWindow(this);
         this.pack();
-        this.setTitle("Graph Connected"); // title
+        this.setTitle("Invalid Edge Error"); // title
         this.setResizable(false); // prevent this to resize
         this.setVisible(true);
-        closeButton.addActionListener(this);
+        close.addActionListener(this);
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == close){
+            this.dispose();
+        }
     }
     /**
      * This method centre the new window opening.
@@ -36,11 +45,5 @@ public class TSPResponse extends JFrame implements ActionListener {
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2.6);
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2.6);
         frame.setLocation(x, y);
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == closeButton) {
-            this.dispose();
-        }
     }
 }

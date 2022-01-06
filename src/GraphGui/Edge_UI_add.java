@@ -1,57 +1,59 @@
-package GUI;
+package GraphGui;
 
 import api.DirectedWeightedGraph;
-import api.EdgeData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Edge_UI_remove extends JFrame implements ActionListener {
-    private JButton remove;
+public class Edge_UI_add extends JFrame implements ActionListener {
+    private JButton Add;
     private JButton Cancel;
+    private JPanel Edge_UI_add;
     private JTextField src_vertex_id;
-    private JPanel Edge_UI_remove;
     private JTextField dest_vertex_id;
+    private JTextField edge_weight;
+    private JLabel Edge_Insertion;
     private DirectedWeightedGraph graph;
     private FrameGraph frame;
 
 
-    public Edge_UI_remove(DirectedWeightedGraph graph, FrameGraph frame){
+
+    public Edge_UI_add(DirectedWeightedGraph graph, FrameGraph frame){
         Image icon = Toolkit.getDefaultToolkit().getImage("src\\GraphGui\\Icons\\logo.png");
         this.setIconImage(icon);
-        this.setContentPane(Edge_UI_remove);
-        this.graph = graph;
         this.frame = frame;
+        this.setContentPane(Edge_UI_add);
+        this.graph = graph;
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         centreWindow(this);
         this.pack();
         this.setTitle("Edge Editor"); // title
-        this.setResizable(false); // prevent this to resize
+        Edge_Insertion.setBounds(0,0,400,1400);
+        this.setResizable(false); // resize allowed
         this.setVisible(true);
         Cancel.addActionListener(this);
-        remove.addActionListener(this);
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == Cancel){dispose();}
-        if (e.getSource() == remove){remove();}
+        Add.addActionListener(this);
+
     }
 
-    public void remove() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      if (e.getSource() == Cancel){dispose();}
+      if (e.getSource() == Add){addEdge();}
+    }
+
+
+    public void addEdge(){
         int src = Integer.parseInt(src_vertex_id.getText());
         int dest = Integer.parseInt(dest_vertex_id.getText());
-        System.out.println("disconnects: " + src + " --> " + dest);
-        EdgeData removedEdge = graph.removeEdge(src, dest);
-        if (removedEdge != null) {
-            this.dispose();
-            frame.dispose();
-            new FrameGraph(graph);
-        }
-        else{
-            new Invalid_Edge_UI();
-        }
+        double weight = Double.parseDouble(edge_weight.getText());
+        System.out.println("connects: "+src+" --> "+dest);
+        graph.connect(src,dest,weight);
+        this.dispose();
+        frame.dispose();
+        new FrameGraph(graph);
     }
 
     /**

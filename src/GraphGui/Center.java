@@ -1,4 +1,4 @@
-package GUI;
+package GraphGui;
 
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithmsImpl;
@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class Center extends JFrame implements ActionListener{
     private FrameGraph frame;

@@ -1,4 +1,4 @@
-package GUI;
+package GraphGui;
 
 import api.DirectedWeightedGraph;
 import api.EdgeData;
@@ -58,7 +58,7 @@ public class PanelGraph extends JPanel {
         insets = fm.getHeight() + radius;
 
         // background:
-        Image background = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/GUI/Icons/background.png"));
+        Image background = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/GraphGui/Icons/background.png"));
         g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
 
         ArrayList<String> LineSave = new ArrayList<>();

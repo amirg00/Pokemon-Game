@@ -3,8 +3,7 @@ package ex4_java_client; /**
  * A trivial example for starting the server and running all needed commands
  */
 
-import GUI.FrameGraph;
-import org.json.JSONObject;
+import GraphGui.FrameGraph;
 
 import java.io.IOException;
 
@@ -42,7 +41,7 @@ public class StudentCode implements Runnable {
         //setStageProps(client);
         //login();
         StageController stageController = new StageController(client);
-        world = new FrameGraph(stageController.getMap());
+        world = new FrameGraph(stageController.getMap(), stageController);
         client.start();
         int frames = 0;
 

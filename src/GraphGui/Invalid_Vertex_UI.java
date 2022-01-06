@@ -1,40 +1,36 @@
-package GUI;
-
-import api.DirectedWeightedGraph;
+package GraphGui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Invalid_Edge_UI extends JFrame implements ActionListener {
+public class Invalid_Vertex_UI extends JFrame implements ActionListener {
+    private JButton close;
+    private JPanel invalid_vertex_pane;
+    private JLabel label;
     private ImageIcon ERROR;
     private Image ERROR_MenuBar;
 
-    private JButton close;
-    private JPanel invalid_edge_pane;
-    private JLabel label;
 
-    public Invalid_Edge_UI(){
-
-        this.setContentPane(invalid_edge_pane);
+    public Invalid_Vertex_UI(){
         ERROR = new ImageIcon("src\\GraphGui\\Icons\\ERROR.png");
         ERROR_MenuBar = Toolkit.getDefaultToolkit().getImage("src\\GraphGui\\Icons\\ERROR.png");
         this.setIconImage(ERROR_MenuBar);
         label.setIcon(ERROR);
+        this.setContentPane(invalid_vertex_pane);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         centreWindow(this);
         this.pack();
-        this.setTitle("Invalid Edge Error"); // title
+        this.setTitle("Invalid Vertex Error"); // title
         this.setResizable(false); // prevent this to resize
         this.setVisible(true);
         close.addActionListener(this);
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == close){
+        if (e.getSource() == close) {
             this.dispose();
         }
     }
