@@ -199,131 +199,13 @@ public class FrameGraph extends JFrame implements ActionListener {
 
 
         this.setJMenuBar(menuBar);
+
         this.setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-
-        if(e.getSource() == exitItem){ System.exit(0);}
-
-        if(e.getSource() == aboutMenu) {
-            openWebPage("https://github.com/GalKoaz/OOP-Ex2/");
-        }
-
-        if (e.getSource() == G1){
-            jsonFileSelected = new File("data\\G1.json");
-            DirectedWeightedGraphAlgorithms g = new DirectedWeightedGraphAlgorithmsImpl();
-            g.load(jsonFileSelected.getPath());
-            this.dispose();
-            this.setVisible(false);
-            new FrameGraph(g.getGraph(), stageController);
-        }
-
-        if (e.getSource() == G2){
-            jsonFileSelected = new File("data\\G2.json");
-            DirectedWeightedGraphAlgorithms g = new DirectedWeightedGraphAlgorithmsImpl();
-            g.load(jsonFileSelected.getPath());
-            this.dispose();
-
-            this.setVisible(false);
-            new FrameGraph(g.getGraph(), stageController);
-        }
-
-        if (e.getSource() == G3) {
-            jsonFileSelected = new File("data\\G3.json");
-            DirectedWeightedGraphAlgorithms g = new DirectedWeightedGraphAlgorithmsImpl();
-            g.load(jsonFileSelected.getPath());
-            this.dispose();
-            this.setVisible(false);
-            new FrameGraph(g.getGraph(),stageController);
-        }
-
-        if (e.getSource() == RandomGraph){new RandomGraph(graph,this,panel);}
-
-
-        if (e.getSource() == loadFile){
-            JFileChooser fileChooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("json","json");
-            fileChooser.setFileFilter(filter);
-            int response = fileChooser.showOpenDialog(null); //select json file to open.
-            String filename = fileChooser.getSelectedFile().toString();
-            if (!filename.endsWith(".json")) {
-                JOptionPane.showMessageDialog(null, "You should load a file with a .json extension!");
-            }else {
-                if (response == JFileChooser.APPROVE_OPTION) {
-                    jsonFileSelected = new File(fileChooser.getSelectedFile().getAbsolutePath());
-                    DirectedWeightedGraphAlgorithms g = new DirectedWeightedGraphAlgorithmsImpl();
-                    g.load(jsonFileSelected.getAbsolutePath());
-                    this.dispose();
-                    new FrameGraph(g.getGraph(), stageController);
-                }
-            }
-        }
-        if (e.getSource() == saveItem) {
-            JFileChooser fileChooser = new JFileChooser();
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("json","json");
-            fileChooser.setFileFilter(filter);
-            int response = fileChooser.showOpenDialog(null); //select json file to open.
-            String filename = fileChooser.getSelectedFile().toString();
-            if (!filename.endsWith(".json")) {
-                JOptionPane.showMessageDialog(null, "You should save the file with a .json extension!");
-            }
-            if (response == JFileChooser.APPROVE_OPTION){
-                jsonFileSelected = new File(fileChooser.getSelectedFile().getAbsolutePath());
-                DirectedWeightedGraphAlgorithms g = new DirectedWeightedGraphAlgorithmsImpl();
-                g.init(graph);
-                g.save(jsonFileSelected.getAbsolutePath());
-
-            }
-        }
-        /**
-         * Vertex -> add a vertex, remove vertex
-         */
-        if (e.getSource() == addVertexItem){new Vertex_UI_add(graph, this);}
-        /**
-         * Edge -> add a vertex, remove vertex
-         */
-        if (e.getSource() == removeVertexItem){ new Vertex_UI_remove(graph,this);}
-
-        if (e.getSource() == addEdgeItem){ new Edge_UI_add(graph,this);}
-
-        if (e.getSource() == removeEdgeItem) {new Edge_UI_remove(graph,this);}
-        /**
-         * Tables for View menu:
-         */
-         if (e.getSource() == verticesTableMenu){new VertexTable(graph);}
-
-         if (e.getSource() == edgesTableMenu){new EdgeTable(graph);}
-
-        /**
-         * algorithms:
-         */
-        if(e.getSource() == shortestPathMenu){new Dijkstra(graph,this,panel);}
-
-        if (e.getSource() == isConnectedMenu){new IsConnect(graph,this,panel);}
-
-        if (e.getSource() == centerMenu){new Center(graph,this,panel);}
-
-        if (e.getSource() == tspMenu) {new TSP(graph,this,panel);}
-
-        if (e.getSource() == clearItem) {
-            this.dispose();
-            new FrameGraph(copyGraph, stageController);
-        }
-    }
-
-    /**
-     * Opening a web page with the given url
-     * @param url the url of the page
-     */
-    public void openWebPage(String url){
-        try{
-            Desktop.getDesktop().browse(java.net.URI.create(url));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
 
     }
     /**
