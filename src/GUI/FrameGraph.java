@@ -3,6 +3,7 @@ package GUI;
 import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 import api.DirectedWeightedGraphAlgorithmsImpl;
+import ex4_java_client.StageController;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -28,11 +29,12 @@ public class FrameGraph extends JFrame implements ActionListener {
     private JMenu edgeItem, vertexItem;
     private JMenuItem clearItem, addEdgeItem, removeEdgeItem, addVertexItem, removeVertexItem;
     private File jsonFileSelected;
+    private StageController stageController;
 
-
-    public FrameGraph(DirectedWeightedGraph graph) { // get here a graph.
+    public FrameGraph(DirectedWeightedGraph graph, StageController stage) { // get here a graph.
         this.graph = graph;
-        this.panel = new PanelGraph(graph);
+        this.stageController = stage;
+        this.panel = new PanelGraph(graph, stageController);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit the app
         centreWindow(this);
         this.add(panel);
@@ -42,6 +44,7 @@ public class FrameGraph extends JFrame implements ActionListener {
         this.copyGraphAtBeginning = new DirectedWeightedGraphAlgorithmsImpl();
         this.copyGraphAtBeginning.init(graph);
         this.copyGraph = copyGraphAtBeginning.copy();
+
 
 
         menuBar = new JMenuBar();
@@ -215,7 +218,7 @@ public class FrameGraph extends JFrame implements ActionListener {
             g.load(jsonFileSelected.getPath());
             this.dispose();
             this.setVisible(false);
-            new FrameGraph(g.getGraph());
+            new FrameGraph(g.getGraph(), stageController);
         }
 
         if (e.getSource() == G2){
@@ -225,7 +228,7 @@ public class FrameGraph extends JFrame implements ActionListener {
             this.dispose();
 
             this.setVisible(false);
-            new FrameGraph(g.getGraph());
+            new FrameGraph(g.getGraph(), stageController);
         }
 
         if (e.getSource() == G3) {
@@ -234,7 +237,7 @@ public class FrameGraph extends JFrame implements ActionListener {
             g.load(jsonFileSelected.getPath());
             this.dispose();
             this.setVisible(false);
-            new FrameGraph(g.getGraph());
+            new FrameGraph(g.getGraph(),stageController);
         }
 
         if (e.getSource() == RandomGraph){new RandomGraph(graph,this,panel);}
@@ -254,7 +257,7 @@ public class FrameGraph extends JFrame implements ActionListener {
                     DirectedWeightedGraphAlgorithms g = new DirectedWeightedGraphAlgorithmsImpl();
                     g.load(jsonFileSelected.getAbsolutePath());
                     this.dispose();
-                    new FrameGraph(g.getGraph());
+                    new FrameGraph(g.getGraph(), stageController);
                 }
             }
         }
@@ -307,7 +310,7 @@ public class FrameGraph extends JFrame implements ActionListener {
 
         if (e.getSource() == clearItem) {
             this.dispose();
-            new FrameGraph(copyGraph);
+            new FrameGraph(copyGraph, stageController);
         }
     }
 

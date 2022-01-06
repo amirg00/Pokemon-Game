@@ -3,6 +3,7 @@ package GUI;
 import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
+import ex4_java_client.StageController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,9 +24,9 @@ public class PanelGraph extends JPanel {
     private Point2D minRange;
     private Point2D maxRange;
     private double insets;
+    private StageController stage;
 
-
-    PanelGraph(DirectedWeightedGraph graph) {
+    PanelGraph(DirectedWeightedGraph graph, StageController stage) {
         this.setPreferredSize(new Dimension(1000, 1000));
         this.points = new HashMap<>();
         this.graph = graph;
@@ -34,7 +35,7 @@ public class PanelGraph extends JPanel {
         setMinMaxRange();
         int numberOfZeros = (int) Math.log10(graph.nodeSize());
         if (numberOfZeros>2){radius = (int) (radius/Math.pow(2,numberOfZeros-2));}
-
+        this.stage = stage;
     }
 
     @Override
