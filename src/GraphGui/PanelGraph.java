@@ -3,6 +3,8 @@ package GraphGui;
 import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.NodeData;
+import ex4_java_client.Agent;
+import ex4_java_client.Pokemon;
 import ex4_java_client.StageController;
 
 import javax.swing.*;
@@ -17,7 +19,7 @@ public class PanelGraph extends JPanel {
     private DirectedWeightedGraph graph;
     private HashMap<Integer,GraphPoint> points;
     private List<GraphEdge> edges;
-    private int radius = 10; //good for 100 vertices.
+    private int radius = 6; //good for 100 vertices.
     private double Phi = Math.toRadians(40);
     private double virtualScale = 1.0;
     private Graphics2D g2d;
@@ -82,6 +84,35 @@ public class PanelGraph extends JPanel {
         return false;
     }
 
+    private void paintPoke(Graphics g, StageController stage){
+        List <Pokemon> poke = stage.getPokemons();
+        if(!poke.isEmpty()){
+            for (Pokemon p: poke) {
+                if(p.getPos()!=null){
+                    if(p.getValue() < 6){
+                        //draw here small
+                    }else if(p.getValue() < 11){
+                        // draw here medium
+                    }else {
+                        // draw here big
+                    }
+                }
+            }
+        }
+    }
+
+    private void paintAgent(Graphics g,Graphics2D g2d){
+        List<Agent> ag = stage.getAgents();
+        int i = 0;
+        while(ag.size()> i){
+           if(ag.get(i).getPos() != null){
+               GraphPoint agen = new GraphPoint("Agent "+String.valueOf(i),new Point2D.Double(ag.get(i).getPos().x(),ag.get(i).getPos().y()),Color.black,Color.black);
+               paintPoint2(g2d,agen,insets,Color.black,Color.black);
+           }
+            i++;
+        }
+    }
+
     protected double angleBetween(Point2D from, Point2D to) {
         double x = from.getX();
         double y = from.getY();
@@ -119,12 +150,12 @@ public class PanelGraph extends JPanel {
         Point2D pointTo = getPointOnCircle(toPoint, top);
         Line2D line = new Line2D.Double(pointFrom, pointTo);
 
-        drawArrowHead(g2d, pointTo, pointFrom, color_2, stroke);
+        //drawArrowHead(g2d, pointTo, pointFrom, color_2, stroke);
         g2d.setStroke(new BasicStroke(stroke));
-        g2d.setColor(color);
+        g2d.setColor(Color.black);
         g2d.draw(line);
         g2d.setStroke(new BasicStroke(1));
-        StringWeight(g2d, weight, to, from, insets, flag);
+        //StringWeight(g2d, weight, to, from, insets, flag);
     }
 
 
@@ -164,9 +195,9 @@ public class PanelGraph extends JPanel {
     private static double[][] Verticle(double x1, double y1, double m_Segment, int length){
         double m = -1/m_Segment;
         // y = mx - mx1 + y1
-        System.out.println(1/Math.pow(m_Segment,2));
+        // System.out.println(1/Math.pow(m_Segment,2));
         double k = 1 + (1/Math.pow(m_Segment,2));
-        System.out.println(k);
+        // System.out.println(k);
         double x1_ans = x1 + (length/Math.sqrt(k));
         double x2_ans = x1 - (length/Math.sqrt(k));
 
@@ -190,7 +221,32 @@ public class PanelGraph extends JPanel {
         g2.translate(xPos - offset, yPos - offset);
         g2.setPaint(color);
         g2.fill(new Ellipse2D.Double(0, 0, offset * 2, offset * 2));
-        g2.setPaint(color_2);
+        g2.setPaint(Color.black);
+        g2.draw(new Ellipse2D.Double(0, 0, offset * 2, offset * 2));
+        FontMetrics fm = g2d.getFontMetrics();
+        String text = gp.getId();
+        double x = xPos - (fm.stringWidth(text) / 2);
+        double y = (yPos - radius - fm.getHeight()) + fm.getAscent();
+        g2d.setPaint(Color.black);
+        g2d.setFont(new Font("Cabin", Font.BOLD, 14));
+        g2d.drawString(text, (float) x, (float) y);
+        g2.dispose();
+    }
+
+    void paintPoint2(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2) {
+        Graphics2D g2 = (Graphics2D) g2d.create();
+
+        Point2D translated = translate(gp, insets);
+
+        double xPos = translated.getX();
+        double yPos = translated.getY();
+
+        double offset = radius;
+
+        g2.translate(xPos - offset, yPos - offset);
+        g2.setPaint(color);
+        g2.fill(new Ellipse2D.Double(0, 0, offset * 2, offset * 2));
+        g2.setPaint(Color.black);
         g2.draw(new Ellipse2D.Double(0, 0, offset * 2, offset * 2));
         FontMetrics fm = g2d.getFontMetrics();
         String text = gp.getId();
@@ -241,7 +297,7 @@ public class PanelGraph extends JPanel {
         double x = offset + ((original.getX() - minRange.getX()) * xScale);
         double y = offset + ((original.getY() - minRange.getY()) * yScale);
 
-        System.out.println(gp.getId() + " " + x + " x " + y);
+        // System.out.println(gp.getId() + " " + x + " x " + y);
 
         return new Point2D.Double(x, y);
     }

@@ -217,4 +217,12 @@ public class StageController {
     public DirectedWeightedGraph getMap() {
         return map;
     }
+
+    public ArrayList<Pokemon> getPokemons() {
+        return pokemons;
+    }
+
+    public ArrayList<Agent> getAgents() {
+        return agents;
+    }
 }
