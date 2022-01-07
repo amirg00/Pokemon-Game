@@ -3,8 +3,21 @@ package ex4_java_client;
 import api.DirectedWeightedGraph;
 import api.GeoLocation;
 import api.NodeData;
-
 import java.util.ArrayList;
+
+/*************************************************
+ * Agent Class                                   *
+ *                                               *
+ * @author  Gal Koaz , Amir Gillette             *
+ * @version 1.0                                  *
+ * @since   07-01-2022                           *
+ *************************************************/
+
+
+/*
+* Agent Class contains all the relevant information for the Agent such as speed factor Agent number Geographical location
+* The number of points he will add based on the value of Pokémon production
+ */
 
 public class Agent {
 

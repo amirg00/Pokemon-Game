@@ -3,6 +3,15 @@ package ex4_java_client;
 import GraphGui.FrameGraph;
 import java.io.IOException;
 
+/*************************************************
+ * Agent Class                                   *
+ *                                               *
+ * @author  Gal Koaz , Amir Gillette             *
+ * @version 1.0                                  *
+ * @since   07-01-2022                           *
+ *************************************************/
+
+
 public class GameEngine implements Runnable {
     public static Client client;
     private FrameGraph world;

@@ -6,6 +6,17 @@ import org.json.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/*************************************************
+ * StageController Class                         *
+ *                                               *
+ * @author  Gal Koaz , Amir Gillette             *
+ * @version 1.0                                  *
+ * @since   07-01-2022                           *
+ *************************************************/
+
+
+
+
 public class StageController {
 
     private DirectedWeightedGraph map;
@@ -213,13 +224,6 @@ public class StageController {
         setDiffTime(120);
     }
 
-    public int getDiffTime() {return diffTime;}
-
-    public void setDiffTime(int diffTime) {this.diffTime = diffTime;}
-
-    public DirectedWeightedGraph getMap() {
-        return map;
-    }
 
     public void setGameServerDetails(String info, String timeMilli){
         JSONObject obj = new JSONObject(info);
@@ -229,6 +233,8 @@ public class StageController {
         lvl = game_details.getInt("game_level");
         time = Integer.parseInt(timeMilli)/1000;
     }
+
+    /******** Getters & Setters *********/
 
     public int getTime() {
         return time;
@@ -252,5 +258,13 @@ public class StageController {
 
     public ArrayList<Agent> getAgents() {
         return agents;
+    }
+
+    public int getDiffTime() {return diffTime;}
+
+    public void setDiffTime(int diffTime) {this.diffTime = diffTime;}
+
+    public DirectedWeightedGraph getMap() {
+        return map;
     }
 }
