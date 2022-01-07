@@ -221,21 +221,6 @@ public class StageController {
         return map;
     }
 
-    public long getCurrTimeSec(){
-        return TimeUnit.MILLISECONDS.toSeconds(Integer.parseInt(game.timeToEnd()));
-    }
-
-    public Client getGame() {
-        return game;
-    }
-
-    public void setInfo(String info){
-        info = game.getInfo();
-    }
-
-    public String getInfo() {
-        return info;
-    }
     public void setGameServerDetails(String info, String timeMilli){
         JSONObject obj = new JSONObject(info);
         JSONObject game_details = obj.getJSONObject("GameServer");

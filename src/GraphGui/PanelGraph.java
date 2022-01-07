@@ -6,7 +6,6 @@ import api.NodeData;
 import ex4_java_client.Agent;
 import ex4_java_client.Pokemon;
 import ex4_java_client.StageController;
-import ex4_java_client.StudentCode;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -16,7 +15,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class PanelGraph extends JPanel {
     private DirectedWeightedGraph graph;
@@ -75,8 +73,7 @@ public class PanelGraph extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        //long currTimeSec = stage.getCurrTimeSec();
-        //System.out.println(currTimeSec);
+
         super.paintComponent(g);
         g2d = (Graphics2D) g.create();
         FontMetrics fm = g2d.getFontMetrics();
@@ -485,7 +482,4 @@ public class PanelGraph extends JPanel {
         lvl = game_details.getInt("game_level");
         time = Integer.parseInt(timeMilli)/1000;
     }
-
-
-
 }
