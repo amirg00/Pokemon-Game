@@ -4,14 +4,12 @@
 <!-- Graphical user -->
 ### Graphical user interface
 
+
 <p align="center">
-<img align="center" src="https://s10.gifyu.com/images/GalKoaz.gif"/>
+<img align="center" src="https://s10.gifyu.com/images/Untitled13.gif"/>
 </p>
 
 ---
-<p align="center">
-<img align="center" src="https://s10.gifyu.com/images/Untitled611bff3bc2c46a20e.gif"/>
-</p>
 (For zoom in click on the image).
 
 In this project we were asked to display the graph visually,
