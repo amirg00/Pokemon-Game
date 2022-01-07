@@ -79,9 +79,6 @@ public class PanelGraph extends JPanel {
         FontMetrics fm = g2d.getFontMetrics();
         insets = fm.getHeight() + radius;
 
-
-        System.out.println(stage.getTime());
-
         // Background:
         Image background = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/GraphGui/Icons/background.png"));
         g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
