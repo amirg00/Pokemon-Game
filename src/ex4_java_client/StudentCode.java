@@ -4,6 +4,7 @@ package ex4_java_client; /**
  */
 
 import GraphGui.FrameGraph;
+import GraphGui.Menu;
 
 import java.io.IOException;
 
@@ -19,12 +20,20 @@ public class StudentCode implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Menu menuGame = new Menu();
+        //Waiting 'til the user will press start button.
+        while(true){
+            if (menuGame.getPlayButtonState()){
+                break;
+            }
+        }
         Thread player = new Thread(new StudentCode());
         player.start();
     }
 
 
     public static void login() {
+
         String temp = String.valueOf(id);
         String id_new = "";
         if (id == -1 || temp.length() != 9) {

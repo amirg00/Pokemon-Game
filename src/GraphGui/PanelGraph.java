@@ -59,10 +59,12 @@ public class PanelGraph extends JPanel {
         FontMetrics fm = g2d.getFontMetrics();
         insets = fm.getHeight() + radius;
 
-        // background:
+        // Background:
         Image background = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/GraphGui/Icons/background.png"));
         g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
 
+
+        // Draw arena section:
         ArrayList<String> LineSave = new ArrayList<>();
         for (GraphEdge ed : edges) {
             ArrayList<GraphPoint> p = ed.getPoints();
@@ -72,6 +74,8 @@ public class PanelGraph extends JPanel {
         for (GraphPoint gp : points.values()) {
             paintPoint(g2d, gp, insets, gp.getTag(), gp.getTag_2());
         }
+        paintPoke(g, g2d);
+        paintAgent(g, g2d);
         g2d.dispose();
     }
 
@@ -84,11 +88,14 @@ public class PanelGraph extends JPanel {
         return false;
     }
 
-    private void paintPoke(Graphics g, StageController stage){
-        List <Pokemon> poke = stage.getPokemons();
-        if(!poke.isEmpty()){
-            for (Pokemon p: poke) {
+    private void paintPoke(Graphics g, Graphics2D g2d){
+        List <Pokemon> pokemons = stage.getPokemons();
+        if(!pokemons.isEmpty()){
+            for (Pokemon p: pokemons) {
                 if(p.getPos()!=null){
+                    GraphPoint poke = new GraphPoint( "Value: " + p.getValue(),new Point2D.Double(p.getPos().x(),p.getPos().y()),Color.red,Color.red);
+                    paintPoint2(g2d,poke,insets,Color.red,Color.red);
+
                     if(p.getValue() < 6){
                         //draw here small
                     }else if(p.getValue() < 11){
@@ -104,9 +111,9 @@ public class PanelGraph extends JPanel {
     private void paintAgent(Graphics g,Graphics2D g2d){
         List<Agent> ag = stage.getAgents();
         int i = 0;
-        while(ag.size()> i){
+        while(i < ag.size()){
            if(ag.get(i).getPos() != null){
-               GraphPoint agen = new GraphPoint("Agent "+String.valueOf(i),new Point2D.Double(ag.get(i).getPos().x(),ag.get(i).getPos().y()),Color.black,Color.black);
+               GraphPoint agen = new GraphPoint("Agent "+String.valueOf(i) + " " + ag.get(i).getValue(),new Point2D.Double(ag.get(i).getPos().x(),ag.get(i).getPos().y()),Color.black,Color.black);
                paintPoint2(g2d,agen,insets,Color.black,Color.black);
            }
             i++;
