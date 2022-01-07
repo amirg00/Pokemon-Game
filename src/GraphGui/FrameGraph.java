@@ -47,7 +47,7 @@ public class FrameGraph extends JFrame implements ActionListener {
     public static void centreWindow(Window frame) {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 8);
-        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 11);
+        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 20);
         frame.setLocation(x, y);
     }
 

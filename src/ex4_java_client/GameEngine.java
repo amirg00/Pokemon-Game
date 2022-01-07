@@ -1,6 +1,8 @@
 package ex4_java_client;
 
 import GraphGui.FrameGraph;
+import GraphGui.PanelGraph;
+
 import java.io.IOException;
 
 /*************************************************
@@ -15,7 +17,7 @@ import java.io.IOException;
 public class GameEngine implements Runnable {
     public static Client client;
     private FrameGraph world;
-
+    private static Thread player;
     public static void main(String[] args) {
         client = new Client();
         try {
@@ -23,7 +25,7 @@ public class GameEngine implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Thread player = new Thread(new GameEngine());
+        player = new Thread(new GameEngine());
         player.start();
     }
 
@@ -42,9 +44,16 @@ public class GameEngine implements Runnable {
 
         // Game loop
         while (client.isRunning().equals("true")) {
+            if (PanelGraph.isStopButtonPressed()){
+                player.stop();
+            }
+
             stageController.moveAgents();
             stageController.checkIfNear();
             stageController.setGameServerDetails(client.getInfo(), client.timeToEnd());
+
+            System.out.println(client.getPokemons());
+
             world.repaint();
             int gdt = stageController.getDiffTime();
             try{

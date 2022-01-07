@@ -58,21 +58,6 @@ public class Menu extends JPanel {
         isPlayButtonPressed = b;
     }
 
-    public void killMenu(){
-
-    }
-
-    /**
-     * This method centre the new window opening.
-     * @param frame the frame to set its location.
-     */
-    public static void centreWindow(Window frame) {
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 8);
-        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 7);
-        frame.setLocation(x, y);
-    }
-
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("GAME");
