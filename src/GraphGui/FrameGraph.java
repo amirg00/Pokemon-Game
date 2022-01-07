@@ -6,13 +6,12 @@ import api.DirectedWeightedGraphAlgorithmsImpl;
 import ex4_java_client.StageController;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
+import java.util.Objects;
 
 public class FrameGraph extends JFrame implements ActionListener {
 
@@ -30,20 +29,24 @@ public class FrameGraph extends JFrame implements ActionListener {
     private JMenuItem clearItem, addEdgeItem, removeEdgeItem, addVertexItem, removeVertexItem;
     private File jsonFileSelected;
     private StageController stageController;
+    private Menu menuPanel;
+    private ImageIcon[] gifs;
+
 
     public FrameGraph(DirectedWeightedGraph graph, StageController stage) { // get here a graph.
+
         this.graph = graph;
         this.stageController = stage;
-        this.panel = new PanelGraph(graph, stageController);
+        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // exit the app
-        centreWindow(this);
-        this.add(panel);
-        this.pack();
         this.setTitle("Directed Weighted Graph by Gal & Amir"); // title
         this.setResizable(true); // prevent this to resize
         this.copyGraphAtBeginning = new DirectedWeightedGraphAlgorithmsImpl();
         this.copyGraphAtBeginning.init(graph);
         this.copyGraph = copyGraphAtBeginning.copy();
+
+
+        gifs = new ImageIcon[]{new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/frame_b.gif")))};
 
 
 
@@ -214,8 +217,38 @@ public class FrameGraph extends JFrame implements ActionListener {
      */
     public static void centreWindow(Window frame) {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 3.2);
-        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 5);
+        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 8);
+        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 7);
         frame.setLocation(x, y);
+    }
+
+
+    public void PlayButtonPressed(boolean flag){
+        if (!flag){
+            this.menuPanel = new Menu();
+            this.setLocationRelativeTo(null);
+            this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/GraphGui/Icons/logo.png")));
+            this.setTitle("Login");
+            this.add(menuPanel);
+            centreWindow(this);
+            this.pack();
+        }
+        else{
+            this.panel = new PanelGraph(graph, stageController);
+            menuPanel.setVisible(false);
+            this.add(panel);
+            this.setTitle("Pokémon v1.0");
+            this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/GraphGui/Icons/PokemonLogo.png")));
+            this.pack();
+            this.setVisible(true);
+        }
+    }
+
+    public boolean getPlayButtonState(){
+       return this.menuPanel.getPlayButtonState();
+    }
+
+    public ImageIcon[] getGifs() {
+        return gifs;
     }
 }

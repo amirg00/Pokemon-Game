@@ -6,6 +6,8 @@ import api.NodeData;
 import ex4_java_client.Agent;
 import ex4_java_client.Pokemon;
 import ex4_java_client.StageController;
+import ex4_java_client.StudentCode;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class PanelGraph extends JPanel {
     private DirectedWeightedGraph graph;
@@ -27,22 +30,40 @@ public class PanelGraph extends JPanel {
     private Point2D maxRange;
     private double insets;
     private StageController stage;
+    private static int lvl, grade, time, moves;
+    private JLabel gameDetails = new JLabel();
+
+    // GIFS:
+    private final ImageIcon[] gifs = new ImageIcon[]{
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/AshRunner.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Bulbasaur.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Charmander.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Squirtle.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Ivysaur.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Charmeleon.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Wartortle.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Venusaur.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Charizard.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Blastoise.gif")))
+    };
+
 
     PanelGraph(DirectedWeightedGraph graph, StageController stage) {
-        this.setPreferredSize(new Dimension(1000, 1000));
+        this.setPreferredSize(new Dimension(1100,750));
+        this.add(gameDetails);
         this.points = new HashMap<>();
         this.graph = graph;
+        this.stage = stage;
         pointInit();
         EdgeInit();
         setMinMaxRange();
         int numberOfZeros = (int) Math.log10(graph.nodeSize());
         if (numberOfZeros>2){radius = (int) (radius/Math.pow(2,numberOfZeros-2));}
-        this.stage = stage;
     }
 
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(500, 500);
+        return new Dimension(1100,750);
     }
 
     /********************************************************************************************************
@@ -54,28 +75,37 @@ public class PanelGraph extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        //long currTimeSec = stage.getCurrTimeSec();
+        //System.out.println(currTimeSec);
         super.paintComponent(g);
         g2d = (Graphics2D) g.create();
         FontMetrics fm = g2d.getFontMetrics();
         insets = fm.getHeight() + radius;
 
+
+        System.out.println(stage.getTime());
+
         // Background:
         Image background = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/GraphGui/Icons/background.png"));
         g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), this);
-
 
         // Draw arena section:
         ArrayList<String> LineSave = new ArrayList<>();
         for (GraphEdge ed : edges) {
             ArrayList<GraphPoint> p = ed.getPoints();
             LineSave.add(""+p.get(0).getId()+"-"+p.get(1).getId());
-            paintLine(g2d, p.get(0), p.get(1), insets, ed.getWeight(),LineSave, ed.getTag(),ed.getStroke(),ed.getTag_2());
+            paintLine(g2d, p.get(0), p.get(1), insets, ed.getWeight(),LineSave, ed.getTag(),2,ed.getTag_2());
         }
         for (GraphPoint gp : points.values()) {
             paintPoint(g2d, gp, insets, gp.getTag(), gp.getTag_2());
         }
         paintPoke(g, g2d);
         paintAgent(g, g2d);
+
+        g.drawString("Time: " + stage.getTime() + " sec",15,30);
+        g.drawString("Total: " + stage.getGrade(),15,45);
+        g.drawString("Moves: " + stage.getMoves(),15,60);
+
         g2d.dispose();
     }
 
@@ -93,19 +123,43 @@ public class PanelGraph extends JPanel {
         if(!pokemons.isEmpty()){
             for (Pokemon p: pokemons) {
                 if(p.getPos()!=null){
-                    GraphPoint poke = new GraphPoint( "Value: " + p.getValue(),new Point2D.Double(p.getPos().x(),p.getPos().y()),Color.red,Color.red);
-                    paintPoint2(g2d,poke,insets,Color.red,Color.red);
-
-                    if(p.getValue() < 6){
-                        //draw here small
-                    }else if(p.getValue() < 11){
-                        // draw here medium
-                    }else {
-                        // draw here big
-                    }
+                    GraphPoint poke = new GraphPoint("Value: " + p.getValue(),new Point2D.Double(p.getPos().x(),p.getPos().y()),Color.red,Color.red);
+                    paintPoint2(g2d,poke,insets,Color.red,Color.red, (int) p.getValue());
                 }
             }
         }
+    }
+
+    /**
+     * Method gets a value of a certain pokemon to draw, and pick
+     * from the list of the pokemon, a pokemon which is corresponds to the given value.
+     * @param value a given value of a certain pokemon.
+     * @return the gif that found corresponded to the value.
+     */
+    public ImageIcon getRandomPokemonByValue(int value){
+        // 0 - 6 (not included), 6 - 11 (not included), 11 - 15 (last included)
+
+        int randomPokemon;
+
+//        if (value < 6){
+//            randomPokemon = 1 + (int)(Math.random() * 2);
+//        }
+//        else if (value < 11){
+//            randomPokemon = 4 + (int)(Math.random() * 2);
+//        }
+//        else{
+//            randomPokemon = 7 + (int)(Math.random() * 2);
+//        }
+        if (value < 6){
+            randomPokemon = 3 ;
+        }
+        else if (value < 11){
+            randomPokemon = 6 ;
+        }
+        else{
+            randomPokemon = 9 ;
+        }
+        return gifs[randomPokemon];
     }
 
     private void paintAgent(Graphics g,Graphics2D g2d){
@@ -113,8 +167,8 @@ public class PanelGraph extends JPanel {
         int i = 0;
         while(i < ag.size()){
            if(ag.get(i).getPos() != null){
-               GraphPoint agen = new GraphPoint("Agent "+String.valueOf(i) + " " + ag.get(i).getValue(),new Point2D.Double(ag.get(i).getPos().x(),ag.get(i).getPos().y()),Color.black,Color.black);
-               paintPoint2(g2d,agen,insets,Color.black,Color.black);
+               GraphPoint agent = new GraphPoint("Agent "+String.valueOf(i) + " " + ag.get(i).getValue(),new Point2D.Double(ag.get(i).getPos().x(),ag.get(i).getPos().y()),Color.black,Color.black);
+               paintPoint3(g2d,agent,insets,Color.black,Color.black);
            }
             i++;
         }
@@ -239,8 +293,34 @@ public class PanelGraph extends JPanel {
         g2d.drawString(text, (float) x, (float) y);
         g2.dispose();
     }
+    void paintPoint2(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2, int value) {
+        Graphics2D g2 = (Graphics2D) g2d.create();
 
-    void paintPoint2(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2) {
+        Point2D translated = translate(gp, insets);
+
+        double xPos = translated.getX();
+        double yPos = translated.getY();
+
+        double offset = radius;
+        Image image = getRandomPokemonByValue(value).getImage();
+        g2.translate(xPos - offset, yPos - offset);
+
+        g2.drawImage(image, 0, 0, (int)offset * 5, (int)offset * 5,this);
+
+        g2.setPaint(color);
+
+        g2.setPaint(Color.black);
+
+        FontMetrics fm = g2d.getFontMetrics();
+        String text = gp.getId();
+        double x = xPos - (fm.stringWidth(text) / 2);
+        double y = (yPos - radius - fm.getHeight()) + fm.getAscent();
+        g2d.setPaint(Color.black);
+        g2d.setFont(new Font("Cabin", Font.BOLD, 14));
+        g2d.drawString(text, (float) x, (float) y);
+        g2.dispose();
+    }
+    void paintPoint3(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2) {
         Graphics2D g2 = (Graphics2D) g2d.create();
 
         Point2D translated = translate(gp, insets);
@@ -251,10 +331,8 @@ public class PanelGraph extends JPanel {
         double offset = radius;
 
         g2.translate(xPos - offset, yPos - offset);
-        g2.setPaint(color);
-        g2.fill(new Ellipse2D.Double(0, 0, offset * 2, offset * 2));
-        g2.setPaint(Color.black);
-        g2.draw(new Ellipse2D.Double(0, 0, offset * 2, offset * 2));
+        Image image = gifs[0].getImage();
+        g2.drawImage(image, 0, -55, (int)offset * 10, (int)offset * 10,this);
         FontMetrics fm = g2d.getFontMetrics();
         String text = gp.getId();
         double x = xPos - (fm.stringWidth(text) / 2);
@@ -398,4 +476,16 @@ public class PanelGraph extends JPanel {
         edges.get(cnt).setTag(color);
 
     }
+
+    public static void setGameServerDetails(String info, String timeMilli){
+        JSONObject obj = new JSONObject(info);
+        JSONObject game_details = obj.getJSONObject("GameServer");
+        moves = game_details.getInt("moves");
+        grade = game_details.getInt("grade");
+        lvl = game_details.getInt("game_level");
+        time = Integer.parseInt(timeMilli)/1000;
+    }
+
+
+
 }

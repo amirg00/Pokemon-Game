@@ -4,10 +4,10 @@ import api.*;
 import org.json.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class StageController {
 
-    private final double EPSILON = .001;
     private DirectedWeightedGraph map;
     private DirectedWeightedGraphAlgorithms algo;
     private ArrayList<Pokemon> pokemons;
@@ -16,6 +16,9 @@ public class StageController {
     private int agents_num;
     private HashMap<Integer, Pokemon> agentsDest;
     private int diffTime;
+    private String info;
+    private int lvl, grade, time, moves;
+
 
     public StageController(Client game){
         agentsDest = new HashMap<>();
@@ -202,7 +205,7 @@ public class StageController {
         for (Agent agent : agents){
             for(Pokemon poke : pokemons){
                 if (agent.isCloseToPokemon(poke)){
-                    setDiffTime(25);
+                    setDiffTime(20);
                     return;
                 }
             }
@@ -216,6 +219,46 @@ public class StageController {
 
     public DirectedWeightedGraph getMap() {
         return map;
+    }
+
+    public long getCurrTimeSec(){
+        return TimeUnit.MILLISECONDS.toSeconds(Integer.parseInt(game.timeToEnd()));
+    }
+
+    public Client getGame() {
+        return game;
+    }
+
+    public void setInfo(String info){
+        info = game.getInfo();
+    }
+
+    public String getInfo() {
+        return info;
+    }
+    public void setGameServerDetails(String info, String timeMilli){
+        JSONObject obj = new JSONObject(info);
+        JSONObject game_details = obj.getJSONObject("GameServer");
+        moves = game_details.getInt("moves");
+        grade = game_details.getInt("grade");
+        lvl = game_details.getInt("game_level");
+        time = Integer.parseInt(timeMilli)/1000;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public int getMoves() {
+        return moves;
+    }
+
+    public int getLvl() {
+        return lvl;
     }
 
     public ArrayList<Pokemon> getPokemons() {
