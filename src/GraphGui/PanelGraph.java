@@ -29,7 +29,9 @@ public class PanelGraph extends JPanel {
     private double insets;
     private StageController stage;
     private static int lvl, grade, time, moves;
-    private JLabel gameDetails = new JLabel();
+    private static boolean stopButtonPressed = false;
+
+
 
     // GIFS:
     private final ImageIcon[] gifs = new ImageIcon[]{
@@ -48,7 +50,6 @@ public class PanelGraph extends JPanel {
 
     PanelGraph(DirectedWeightedGraph graph, StageController stage) {
         this.setPreferredSize(new Dimension(1100,750));
-        this.add(gameDetails);
         this.points = new HashMap<>();
         this.graph = graph;
         this.stage = stage;
@@ -57,6 +58,18 @@ public class PanelGraph extends JPanel {
         setMinMaxRange();
         int numberOfZeros = (int) Math.log10(graph.nodeSize());
         if (numberOfZeros>2){radius = (int) (radius/Math.pow(2,numberOfZeros-2));}
+        JButton btn = new JButton("Stop");
+        btn.setFont(new Font("Calibri", Font.PLAIN, 20));
+        btn.setBackground(Color.red);
+        btn.setForeground(Color.BLACK);
+        btn.setUI(new StyledButtonUI());
+        this.add(btn);
+        btn.addActionListener(e -> {
+            System.out.println("pressed!");
+            setStopButtonPressed(true);
+        });
+
+
     }
 
     @Override
@@ -73,7 +86,6 @@ public class PanelGraph extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-
         super.paintComponent(g);
         g2d = (Graphics2D) g.create();
         FontMetrics fm = g2d.getFontMetrics();
@@ -469,5 +481,13 @@ public class PanelGraph extends JPanel {
         grade = game_details.getInt("grade");
         lvl = game_details.getInt("game_level");
         time = Integer.parseInt(timeMilli)/1000;
+    }
+
+    public void setStopButtonPressed(boolean stopButtonPressed) {
+        this.stopButtonPressed = stopButtonPressed;
+    }
+
+    public static boolean isStopButtonPressed() {
+        return stopButtonPressed;
     }
 }
