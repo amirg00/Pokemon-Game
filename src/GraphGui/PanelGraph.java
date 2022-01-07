@@ -161,7 +161,7 @@ public class PanelGraph extends JPanel {
         int i = 0;
         while(i < ag.size()){
            if(ag.get(i).getPos() != null){
-               GraphPoint agent = new GraphPoint("Agent "+String.valueOf(i) + " " + ag.get(i).getValue(),new Point2D.Double(ag.get(i).getPos().x(),ag.get(i).getPos().y()),Color.black,Color.black);
+               GraphPoint agent = new GraphPoint("Agent "+String.valueOf(i) + " (" + ag.get(i).getValue()+")",new Point2D.Double(ag.get(i).getPos().x(),ag.get(i).getPos().y()),Color.black,Color.black);
                paintPoint3(g2d,agent,insets,Color.black,Color.black);
            }
             i++;
@@ -265,7 +265,6 @@ public class PanelGraph extends JPanel {
 
     void paintPoint(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2) {
         Graphics2D g2 = (Graphics2D) g2d.create();
-
         Point2D translated = translate(gp, insets);
 
         double xPos = translated.getX();
@@ -289,20 +288,14 @@ public class PanelGraph extends JPanel {
     }
     void paintPoint2(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2, int value) {
         Graphics2D g2 = (Graphics2D) g2d.create();
-
         Point2D translated = translate(gp, insets);
-
         double xPos = translated.getX();
         double yPos = translated.getY();
-
         double offset = radius;
         Image image = getRandomPokemonByValue(value).getImage();
         g2.translate(xPos - offset, yPos - offset);
-
         g2.drawImage(image, 0, 0, (int)offset * 5, (int)offset * 5,this);
-
         g2.setPaint(color);
-
         g2.setPaint(Color.black);
 
         FontMetrics fm = g2d.getFontMetrics();
@@ -318,10 +311,8 @@ public class PanelGraph extends JPanel {
         Graphics2D g2 = (Graphics2D) g2d.create();
 
         Point2D translated = translate(gp, insets);
-
         double xPos = translated.getX();
         double yPos = translated.getY();
-
         double offset = radius;
 
         g2.translate(xPos - offset, yPos - offset);
@@ -333,7 +324,7 @@ public class PanelGraph extends JPanel {
         double y = (yPos - radius - fm.getHeight()) + fm.getAscent();
         g2d.setPaint(Color.black);
         g2d.setFont(new Font("Cabin", Font.BOLD, 14));
-        g2d.drawString(text, (float) x, (float) y);
+        g2d.drawString(text, (float) x, (float) y-40);
         g2.dispose();
     }
 
