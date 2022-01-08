@@ -158,7 +158,7 @@ It picks the unvisited vertex with the lowest distance, calculates the distance 
 |8|100|275|
 |9|374|558|
 |10|110|276|
-|11|1415|580|
+|11|1588|593|
 |12|40|275|
 |13|300|558|
 |14|214|276|
