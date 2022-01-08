@@ -18,6 +18,8 @@ public class GameEngine implements Runnable {
     public static Client client;
     private FrameGraph world;
     private static Thread player;
+    private static long intialTime;
+
     public static void main(String[] args) {
         client = new Client();
         try {
@@ -28,7 +30,6 @@ public class GameEngine implements Runnable {
         player = new Thread(new GameEngine());
         player.start();
     }
-
 
     @Override
     public void run() {
@@ -41,6 +42,7 @@ public class GameEngine implements Runnable {
         }
         world.PlayButtonPressed(true);
         client.start();
+        intialTime = 1 + (Integer.parseInt(client.timeToEnd())/1000);
 
         // Game loop
         while (client.isRunning().equals("true")) {
@@ -49,13 +51,10 @@ public class GameEngine implements Runnable {
             }
 
             stageController.moveAgents();
-            stageController.checkIfNear();
             stageController.setGameServerDetails(client.getInfo(), client.timeToEnd());
-
-            System.out.println(client.getPokemons());
-
+            if (stageController.getMoves() == intialTime * 10){break;}
             world.repaint();
-            int gdt = stageController.getDiffTime();
+            int gdt = stageController.checkIfNear()? 30 : 100;
             try{
                 Thread.sleep(gdt);
             } catch (InterruptedException e) {

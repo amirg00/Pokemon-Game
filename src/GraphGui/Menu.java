@@ -30,7 +30,6 @@ public class Menu extends JPanel {
         btn.setRolloverIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/frame_b.gif"))));
         add(btn, gbc);
         btn.addActionListener(e -> {
-            System.out.println("pressed!");
             setPlayButtonState(true);
         });
     }
@@ -56,21 +55,6 @@ public class Menu extends JPanel {
 
     public void setPlayButtonState(boolean b){
         isPlayButtonPressed = b;
-    }
-
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("GAME");
-        frame.add(new Menu());
-        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2.6);
-        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2.6);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocation(x, y);
-        frame.setResizable(true);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 }
 

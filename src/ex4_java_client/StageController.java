@@ -212,16 +212,17 @@ public class StageController {
     /**
      * Method checks if there is an agent close to a pokemon.
      */
-    public void checkIfNear(){
+    public boolean checkIfNear(){
         for (Agent agent : agents){
             for(Pokemon poke : pokemons){
                 if (agent.isCloseToPokemon(poke)){
                     setDiffTime(20);
-                    return;
+                    return true;
                 }
             }
         }
         setDiffTime(120);
+        return false;
     }
 
 
