@@ -16,11 +16,7 @@ In this project we were asked to display the graph visually,
 
 we chose to represent the graph using Java Swing with a panel that allows uploading a graph using a JSON file.
 
-Saving a graph to a JSON file, adding and deleting a vertex, adding and deleting an Edge,
-
-Access to see the whole process of the algorithms in real time (Shorted path, isConnected, Travelling Salesman Problem (TSP), Center).
-
-In addition, we added a help button that links directly to Git.
+In addition, we added a STOP button that gracefully stop the game at any time point.
 
 ----------------
 
