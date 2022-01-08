@@ -109,7 +109,6 @@ In this assignment, you will be asked to “put into practice” the main tools 
 
 ## Code Details
 
-
 Unified Modeling Language (UML) :
 
 Click the image for zoom in.
