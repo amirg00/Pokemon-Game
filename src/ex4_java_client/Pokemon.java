@@ -131,12 +131,13 @@ public class Pokemon {
     public void setDist(double dist) {
         this.dist = dist;
     }
+
     /************* Equals ***************/
 
     /**
-    * @param other:
-     * @return if the current edges are equals.
-    * */
+    * @param other other pokemon to compare.
+    * @return if the current edges are equals.
+    */
     public boolean equals(Pokemon other){
         return this.getCurrEdge().equals(other.getCurrEdge());
     }
