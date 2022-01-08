@@ -16,11 +16,7 @@ In this project we were asked to display the graph visually,
 
 we chose to represent the graph using Java Swing with a panel that allows uploading a graph using a JSON file.
 
-Saving a graph to a JSON file, adding and deleting a vertex, adding and deleting an Edge,
-
-Access to see the whole process of the algorithms in real time (Shorted path, isConnected, Travelling Salesman Problem (TSP), Center).
-
-In addition, we added a help button that links directly to Git.
+In addition, we added a STOP button that gracefully stop the game at any time point.
 
 ----------------
 
@@ -162,11 +158,12 @@ It picks the unvisited vertex with the lowest distance, calculates the distance 
 |8|100|275|
 |9|374|558|
 |10|110|276|
-|11|1415|580|
+|11|1588|593|
 |12|40|275|
 |13|300|558|
 |14|214|276|
 |15|310|562|
+
 
 ---------
 <!-- how-to-run -->
