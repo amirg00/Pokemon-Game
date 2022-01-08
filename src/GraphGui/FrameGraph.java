@@ -4,14 +4,11 @@ import api.DirectedWeightedGraph;
 import api.DirectedWeightedGraphAlgorithms;
 import api.DirectedWeightedGraphAlgorithmsImpl;
 import ex4_java_client.StageController;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.Objects;
+
 
 public class FrameGraph extends JFrame implements ActionListener {
 
@@ -36,10 +33,8 @@ public class FrameGraph extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {}
 
-
-    }
     /**
      * This method centre the new window opening.
      * @param frame the frame to set its location.
@@ -51,7 +46,10 @@ public class FrameGraph extends JFrame implements ActionListener {
         frame.setLocation(x, y);
     }
 
-
+    /**
+     * This method navigate between panels, to switch between the login panel to the stage panel.
+     * @param flag
+     */
     public void PlayButtonPressed(boolean flag){
         if (!flag){
             this.menuPanel = new Menu();

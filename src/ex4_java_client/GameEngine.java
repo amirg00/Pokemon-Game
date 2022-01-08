@@ -1,8 +1,6 @@
 package ex4_java_client;
-
 import GraphGui.FrameGraph;
 import GraphGui.PanelGraph;
-
 import java.io.IOException;
 
 /*************************************************
@@ -14,6 +12,15 @@ import java.io.IOException;
  *************************************************/
 
 
+
+/**
+ * Class details: this class suppose to be the game engine.
+ * The game main loop runs withing thread called 'player'.
+ * In addition, the MVC's controller is responsible for the
+ * communication with the view (GUI) and with the Model classes (Agent, Pokemon).
+ * Moreover, this class also responsible for not exceeding the max amount of moves in each stage,
+ * and listen for presses of the GUI's buttons (in entrance panel, and in game's panel).
+ */
 public class GameEngine implements Runnable {
     public static Client client;
     private FrameGraph world;

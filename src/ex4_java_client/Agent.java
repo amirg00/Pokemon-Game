@@ -1,9 +1,6 @@
 package ex4_java_client;
-
-import api.DirectedWeightedGraph;
 import api.GeoLocation;
-import api.NodeData;
-import java.util.ArrayList;
+
 
 /*************************************************
  * Agent Class                                   *
@@ -15,8 +12,9 @@ import java.util.ArrayList;
 
 
 /*
-* Agent Class contains all the relevant information for the Agent such as speed factor Agent number Geographical location
-* The number of points he will add based on the value of Pokémon production
+ *  Class details: Agent Class contains all the relevant information for the Agent,
+ *  such as: speed factor Agent number, Geographical location, etc...
+ *  In addition, the number of points he will add based on the value of Pokémon production.
  */
 
 public class Agent {
@@ -38,7 +36,7 @@ public class Agent {
     }
 
     /**
-     * @return true iff the agent is on the way to catch a pokemon, o.w. return false.
+     * @return true iff the agent is on the way to catch a pokemon (dest = 1), o.w. return false.
      */
     public boolean isOnWay() { return dest != -1;}
 
@@ -99,7 +97,6 @@ public class Agent {
     public void setSpeed(double speed) {
         this.speed = speed;
     }
-
 
     public void setSrc(int src) {
         this.src = src;

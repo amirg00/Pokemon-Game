@@ -1,10 +1,7 @@
 package ex4_java_client;
-
 import api.*;
 import org.json.*;
-
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 /*************************************************
  * StageController Class                         *
@@ -15,8 +12,9 @@ import java.util.concurrent.TimeUnit;
  *************************************************/
 
 
-
-
+/**
+ * Class details: this class is the controller of MVC implementation.
+ */
 public class StageController {
 
     private DirectedWeightedGraph map;
@@ -26,8 +24,6 @@ public class StageController {
     private Client game;
     private int agents_num;
     private HashMap<Integer, Pokemon> agentsDest;
-    private int diffTime;
-    private String info;
     private int lvl, grade, time, moves;
 
 
@@ -46,7 +42,7 @@ public class StageController {
 
 
     /**
-     * The method initializes the game's properties, such as: agents number, stage number.
+     * The method initializes the game's agents amount.
      * @param client gets a client reference, which communicates with the server.
      */
     public void setStageProps(Client client){
@@ -86,8 +82,18 @@ public class StageController {
     }
 
     /**
-     * if type = 1 -> low to high
-     * else type = -1 -> high to low.
+     * Since initialization of the agents with addAgent server's method is needed,
+     * when starting the game, we iterate the pokemons from the biggest pokemon's value
+     * til we reached the agents number.
+     *
+     * The method wisely takes the pokemons which have the biggest value,
+     * and places the agent there, so when starting the game we can see
+     * that the agents are firstly placed at the nodes which connected
+     * on edges, that have the pokemons with the biggest values.
+     *
+     * The method checks the pokemon's type then:
+     *      if type = 1 -> low to high (means with take the minimum between src and dst nodes)
+     *      else type = -1 -> high to low (means with take the maximum between src and dst nodes).
      */
     public void initAgents() {
         for (int i = pokemons.size() - 1, m = 0; i >= 0; i--,m++) {
@@ -101,6 +107,12 @@ public class StageController {
         }
     }
 
+    /**
+     * The method reads the json string line, which got from the server,
+     * and initializes the updates the agents, this is why we create a new
+     * agents list to contain the agents.
+     * @param json gets a json file as a string line, which has the agents.
+     */
     public void updateAgents(String json){
         agents = new ArrayList<>();
         agentsDest = new HashMap<>();
@@ -126,7 +138,16 @@ public class StageController {
     }
 
 
-
+    /**
+     * The method reads the json string line, which got from the server,
+     * and initializes the current pokemons, this is why we create a new
+     * pokemons list to contain the pokemones.
+     *
+     * Additionally, we update the pokemons' current edge, to know where they
+     * are located on the map, in terms of on which edge they are.
+     *
+     * @param json gets a json file as a string line, which has the pokemons.
+     */
     public void initPokemons(String json){
         pokemons = new ArrayList<>();
         JSONObject obj = new JSONObject(json);
@@ -148,6 +169,13 @@ public class StageController {
         }
     }
 
+    /**
+     * This method moves each agent following chooseNextEdgeAlgo method.
+     * The method first initializes the current agents and pokemons,
+     * and then check if the agent is not on a way to a certain pokemon,
+     * if so we call the algorithm to choose for the agent a next edge.
+     * Finally, the method moves each agent to his next destination.
+     */
     public void moveAgents(){
         updateAgents(game.getAgents());
         initPokemons(game.getPokemons());
@@ -164,6 +192,20 @@ public class StageController {
     }
 
     /**
+     * This method uses dijkstra's algorithm in order to check the next edge.
+     * The method initializes a priority queue with the pokemon which always compares
+     * the pokemon's current shortest path from the current position of the agent
+     * towards the pokemon (pokemon's edge inclusive - 'addition').
+     * After going over each pokemon, the method checks if there is an available pokemon,
+     * and if so she takes the one with the lowest dist value, which means that he is the closest
+     * to the agent current position.
+     *
+     * In addition, if there isn't an available pokemon, then the method moves the agent to his dest,
+     * just to make him move and not stuck where there isn't an available pokemon.
+     *
+     * If we indeed succeeded taking a such closest pokemon, we take the path(1) which means we take
+     * the destination of first edge in the path, because we need to move the agent to a neighbour.
+     *
      *
      * @param agent current agent.
      * @return the next node's id that agent needs to go to.
@@ -208,24 +250,26 @@ public class StageController {
         return true;
     }
 
-    //TODO: complete documentation...
     /**
      * Method checks if there is an agent close to a pokemon.
+     * @return true iff there is an agent closes to a pokemon, o.w. returns false.
      */
     public boolean checkIfNear(){
         for (Agent agent : agents){
             for(Pokemon poke : pokemons){
                 if (agent.isCloseToPokemon(poke)){
-                    setDiffTime(20);
                     return true;
                 }
             }
         }
-        setDiffTime(120);
         return false;
     }
 
-
+    /**
+     * The method sets the game server details to the controller's properties (moves, grade, lvl, grade).
+     * @param info the game server details as a string given by the server.
+     * @param timeMilli time in milliseconds, also given as a string.
+     */
     public void setGameServerDetails(String info, String timeMilli){
         JSONObject obj = new JSONObject(info);
         JSONObject game_details = obj.getJSONObject("GameServer");
@@ -260,10 +304,6 @@ public class StageController {
     public ArrayList<Agent> getAgents() {
         return agents;
     }
-
-    public int getDiffTime() {return diffTime;}
-
-    public void setDiffTime(int diffTime) {this.diffTime = diffTime;}
 
     public DirectedWeightedGraph getMap() {
         return map;

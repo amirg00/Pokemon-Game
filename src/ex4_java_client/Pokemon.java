@@ -1,5 +1,4 @@
 package ex4_java_client;
-
 import api.DirectedWeightedGraph;
 import api.EdgeData;
 import api.GeoLocation;
@@ -16,9 +15,9 @@ import java.util.Iterator;
 
 
 /*
- * Pokemon Class contains all the relevant information for the Pokemon such as Value(how much worth the pokemon)
- *  Geographical location, current edge the pokemon is placed.
- * The number of points he will add based on the value of Pokémon production
+ *  Class details: Pokemon Class contains all the relevant information for the Pokemon,
+ *  such as Value(how much worth the pokemon), Geographical location, current edge the pokemon is placed.
+ *  Moreover, the number of points he will add based on the value of Pokémon production.
  */
 
 public class Pokemon {
@@ -40,7 +39,7 @@ public class Pokemon {
     }
 
     /**
-     * This method over the all edges and update from the edge iterator the current edges.
+     * This method goes over the all edges and update from the edge iterator their current edges.
      * @param graph the stage graph.
      */
     public void updateEdge(DirectedWeightedGraph graph){
@@ -55,6 +54,20 @@ public class Pokemon {
 
     /**
      * The method checks whether the current pokemon is onto the edge (i.e. whithin epsilon enviroment).
+     *
+     * Exceptional cases:
+     *                  1. if the type of the pokemon is 1, and we get the inverse meaning where src > dest,
+     *                  then we cannot place the pokemon there, by def.
+     *
+     *                  2. if the type of the pokemon is -1, and we get the inverse meaning where dest > src,
+     *                     then we cannot place the pokemon there, by def.
+     *
+     * Otherwise, we can place the pokemon there, and therefore, we take each node's geolocation points,
+     * and check if the pokemon on the edge (on epsilon enviroment of the edge), by the following math condition:
+     * if the total edge between the nodes plus epsilon is bigger then the addition of the nodes to the pokemon,
+     * it means that the pokemon inside epsilon enviroment, since the cos(x) which is the different
+     * between the original edge to the current, isn't big.
+     *
      * @param edge a certain edge.
      * @param graph the stage graph.
      * @return True,False.

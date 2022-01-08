@@ -5,6 +5,9 @@ import java.awt.*;
 import java.util.Objects;
 
 
+/**
+ * Class details: this class suppose to be the entrance login panel, before starting the game.
+ */
 public class Menu extends JPanel {
 
     private static boolean isPlayButtonPressed;

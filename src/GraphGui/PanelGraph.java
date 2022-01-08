@@ -27,7 +27,6 @@ public class PanelGraph extends JPanel {
     private Point2D maxRange;
     private double insets;
     private StageController stage;
-    private static int lvl, grade, time, moves;
     private static boolean stopButtonPressed = false;
 
 

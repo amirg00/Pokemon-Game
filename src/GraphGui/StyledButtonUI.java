@@ -5,6 +5,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
+/**
+ * Class details: this class is a special design for a button.
+ * Used especially for the stop button which placed on the stage map.
+ */
 public class StyledButtonUI extends BasicButtonUI {
 
     @Override
