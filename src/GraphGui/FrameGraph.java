@@ -66,7 +66,7 @@ public class FrameGraph extends JFrame implements ActionListener {
             this.panel = new PanelGraph(graph, stageController);
             menuPanel.setVisible(false);
             this.add(panel);
-            this.setTitle("Pokémon v1.0");
+            this.setTitle("Pokémon v1.1");
             this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/GraphGui/Icons/PokemonLogo.png")));
             this.pack();
             this.setVisible(true);

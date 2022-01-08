@@ -6,7 +6,6 @@ import api.NodeData;
 import ex4_java_client.Agent;
 import ex4_java_client.Pokemon;
 import ex4_java_client.StageController;
-import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -145,27 +144,40 @@ public class PanelGraph extends JPanel {
     public ImageIcon getRandomPokemonByValue(int value){
         // 0 - 6 (not included), 6 - 11 (not included), 11 - 15 (last included)
 
-        int randomPokemon;
+        int chosenPokemon = 0;
 
-//        if (value < 6){
-//            randomPokemon = 1 + (int)(Math.random() * 2);
-//        }
-//        else if (value < 11){
-//            randomPokemon = 4 + (int)(Math.random() * 2);
-//        }
-//        else{
-//            randomPokemon = 7 + (int)(Math.random() * 2);
-//        }
-        if (value < 6){
-            randomPokemon = 3 ;
+        if (value < 3 ){
+            chosenPokemon = 1;
         }
-        else if (value < 11){
-            randomPokemon = 6 ;
+        else if (value < 5){
+            chosenPokemon = 2;
         }
-        else{
-            randomPokemon = 9 ;
+        else if (value < 6){
+            chosenPokemon = 3;
         }
-        return gifs[randomPokemon];
+        else if (value < 8){
+            chosenPokemon = 4;
+        }
+
+        else if (value == 9){
+            chosenPokemon = 5;
+        }
+
+        else if (value == 10){
+            chosenPokemon = 6;
+        }
+
+        else if (value < 13){
+            chosenPokemon = 7;
+        }
+        else if (value < 15){
+            chosenPokemon = 8;
+        }
+        else if (value < 20){
+            chosenPokemon = 9;
+        }
+
+        return gifs[chosenPokemon];
     }
 
     private void paintAgent(Graphics g,Graphics2D g2d){
@@ -217,40 +229,12 @@ public class PanelGraph extends JPanel {
         Point2D pointTo = getPointOnCircle(toPoint, top);
         Line2D line = new Line2D.Double(pointFrom, pointTo);
 
-        //drawArrowHead(g2d, pointTo, pointFrom, color_2, stroke);
         g2d.setStroke(new BasicStroke(stroke));
         g2d.setColor(Color.black);
         g2d.draw(line);
         g2d.setStroke(new BasicStroke(1));
-        //StringWeight(g2d, weight, to, from, insets, flag);
     }
 
-
-    private void StringWeight(Graphics2D g2d, String weight, GraphPoint to, GraphPoint from, double insets,boolean check) {
-        Point2D translated = translate(from, insets);
-        Point2D translated2 = translate(to, insets);
-        double xPos = translated.getX();
-        double yPos = translated.getY();
-        double xPos2 = translated2.getX();
-        double yPos2 = translated2.getY();
-        double m_Segment = (yPos2-yPos)/(xPos2-xPos);
-        double x_center = (xPos + xPos2) / 2;
-        double y_center = (yPos + (yPos2)) / 2;
-        double[][] points_ver = Verticle(x_center,y_center,m_Segment,11);
-        g2d.setPaint(Color.black);
-        weight =  String.format("%.3f", Float.parseFloat(weight))+"["+from.getId()+"-->"+to.getId()+"]";
-        g2d.setPaint(Color.black);
-        g2d.setFont(new Font("Cabin", Font.PLAIN, 11));
-        double angle = Math.atan((yPos2-yPos)/(xPos2-xPos));
-        g2d.setColor(Color.black);
-        if(graph.nodeSize() < 48) {
-            if (check) {
-                drawRotate(g2d, points_ver[1][0], points_ver[1][1], angle, weight);
-            } else {
-                drawRotate(g2d, points_ver[0][0], points_ver[0][1], angle, weight);
-            }
-        }
-    }
     public static void drawRotate(Graphics2D g2d, double x, double y, double angle, String text) {
         g2d.translate((float)x,(float)y);
         g2d.rotate(angle);
@@ -340,28 +324,7 @@ public class PanelGraph extends JPanel {
         g2.dispose();
     }
 
-    /********************************************************************************************************
-     * <drawArrowHead>
-     * this function for each line we are add a arrow head to the tip of the point just to "touch" the point,
-     * so we can see the direction for each point.
-     *</drawArrowHead>
-     *********************************************************************************************************/
 
-    private void drawArrowHead(Graphics2D g2, Point2D tip, Point2D tail, Color color, int stroke) {
-        int ArrowSize = 10;
-        g2.setPaint(color);
-        double dy = tip.getY() - tail.getY();
-        double dx = tip.getX() - tail.getX();
-        double theta = Math.atan2(dy, dx);
-        double x, y, rho = theta + Phi;
-        for (int j = 0; j < 2; j++) {
-            x = (tip.getX() - ArrowSize * Math.cos(rho));
-            y = (tip.getY() - ArrowSize * Math.sin(rho));
-            g2.setStroke(new BasicStroke(stroke));
-            g2.draw(new Line2D.Double(tip.getX(), tip.getY(), x, y));
-            rho = theta - Phi;
-        }
-    }
 
     protected Point2D translate(GraphPoint gp, double insets) {
         double xRange = maxRange.getX() - minRange.getX();
@@ -454,34 +417,6 @@ public class PanelGraph extends JPanel {
         return points;
     }
 
-    public void setPointColor(int pointIndex,Color color, Color color_2){
-        points.get(pointIndex).setTag_2(color_2);
-        points.get(pointIndex).setTag(color);
-    }
-
-    public void setEdgeColor(int src, int dest,Color color, Color color_2){
-        int cnt = 0;
-        for(GraphEdge ge: edges){
-            if (Objects.equals(ge.getPoints().get(0).getId(), "" + src)
-                    && Objects.equals(ge.getPoints().get(1).getId(), "" + dest)){
-                break;
-            }
-            cnt++;
-        }
-        edges.get(cnt).setStroke(4);
-        edges.get(cnt).setTag_2(color_2);
-        edges.get(cnt).setTag(color);
-
-    }
-
-    public static void setGameServerDetails(String info, String timeMilli){
-        JSONObject obj = new JSONObject(info);
-        JSONObject game_details = obj.getJSONObject("GameServer");
-        moves = game_details.getInt("moves");
-        grade = game_details.getInt("grade");
-        lvl = game_details.getInt("game_level");
-        time = Integer.parseInt(timeMilli)/1000;
-    }
 
     public void setStopButtonPressed(boolean stopButtonPressed) {
         this.stopButtonPressed = stopButtonPressed;
