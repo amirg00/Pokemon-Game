@@ -173,11 +173,11 @@ It picks the unvisited vertex with the lowest distance, calculates the distance 
 <!-- how-to-run -->
 # How to run
 
-_Jar file:_
+_Jar files:_
 
 * <big>**<u>_THE JAR MUST BE IN THE PROJECT FOLDER!!_</u>**</big>
 
-* _Jar  file name:  Ex4_Server_v0.0.jar_
+* _Jar  files' names:  Ex4_Server_v0.0.jar, Ex4_Client_v1.1.jar_
 
 Run Jar file  in commend line:
 
@@ -185,6 +185,11 @@ Run Jar file  in commend line:
 java -jar Ex4_Server_v0.0.jar <stage number>
 ```
 
+After running the server, we should run the client with the following command line:  
+
+```
+java -jar Ex4_Client_v1.1.jar
+```
 
 In this project we used some external libraries in the JAVA language, in order to make life easier these libraries are located within the project called external libraries.
 
