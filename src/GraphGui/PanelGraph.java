@@ -12,6 +12,8 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -46,7 +48,35 @@ public class PanelGraph extends JPanel {
     };
 
 
-    PanelGraph(DirectedWeightedGraph graph, StageController stage) {
+    // GIFS:
+    private final AnimatedGif[] animationGifs = new AnimatedGif[]{
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/AshRunner.gif")),
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/Bulbasaur.gif")),
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/Charmander.gif")),
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/Squirtle.gif")),
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/Ivysaur.gif")),
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/Charmeleon.gif")),
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/Wartortle.gif")),
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/Venusaur.gif")),
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/Charizard.gif")),
+            new AnimatedGif(this, getClass().getResource("/GraphGui/Icons/Blastoise.gif"))
+    };
+
+    // GIFS:
+    private final String[] urls = new String[]{
+            "/GraphGui/Icons/Bulbasaur.gif",
+            "/GraphGui/Icons/Charmander.gif",
+            "/GraphGui/Icons/Squirtle.gif",
+            "/GraphGui/Icons/Ivysaur.gif",
+            "/GraphGui/Icons/Charmeleon.gif",
+            "/GraphGui/Icons/Wartortle.gif",
+            "/GraphGui/Icons/Venusaur.gif",
+            "/GraphGui/Icons/Charizard.gif",
+            "/GraphGui/Icons/Blastoise.gif"
+    };
+
+
+    PanelGraph(DirectedWeightedGraph graph, StageController stage) throws IOException {
         this.setPreferredSize(new Dimension(1100,750));
         this.points = new HashMap<>();
         this.graph = graph;
@@ -61,12 +91,18 @@ public class PanelGraph extends JPanel {
         btn.setBackground(Color.red);
         btn.setForeground(Color.BLACK);
         btn.setUI(new StyledButtonUI());
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         this.add(btn);
         btn.addActionListener(e -> {
             System.out.println("pressed!");
             setStopButtonPressed(true);
         });
 
+        // Start gifs
+        for(AnimatedGif animationGif: animationGifs){
+            animationGif.play();
+        }
 
     }
 
@@ -103,7 +139,11 @@ public class PanelGraph extends JPanel {
         for (GraphPoint gp : points.values()) {
             paintPoint(g2d, gp, insets, gp.getTag(), gp.getTag_2());
         }
-        paintPoke(g, g2d);
+        try {
+            paintPoke(g, g2d);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         paintAgent(g, g2d);
 
         g.drawString("Time: " + stage.getTime() + " sec",15,30);
@@ -122,7 +162,7 @@ public class PanelGraph extends JPanel {
         return false;
     }
 
-    private void paintPoke(Graphics g, Graphics2D g2d){
+    private void paintPoke(Graphics g, Graphics2D g2d) throws IOException {
         List <Pokemon> pokemons = stage.getPokemons();
         if(!pokemons.isEmpty()){
             for (Pokemon p: pokemons) {
@@ -140,7 +180,7 @@ public class PanelGraph extends JPanel {
      * @param value a given value of a certain pokemon.
      * @return the gif that found corresponded to the value.
      */
-    public ImageIcon getRandomPokemonByValue(int value){
+    public AnimatedGif getRandomPokemonByValue(int value){
         // 0 - 6 (not included), 6 - 11 (not included), 11 - 15 (last included)
 
         int chosenPokemon = 0;
@@ -176,7 +216,7 @@ public class PanelGraph extends JPanel {
             chosenPokemon = 9;
         }
 
-        return gifs[chosenPokemon];
+        return animationGifs[chosenPokemon];
     }
 
     private void paintAgent(Graphics g,Graphics2D g2d){
@@ -281,15 +321,19 @@ public class PanelGraph extends JPanel {
         g2d.drawString(text, (float) x, (float) y);
         g2.dispose();
     }
-    void paintPoint2(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2, int value) {
+    void paintPoint2(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2, int value) throws IOException {
         Graphics2D g2 = (Graphics2D) g2d.create();
         Point2D translated = translate(gp, insets);
         double xPos = translated.getX();
         double yPos = translated.getY();
         double offset = radius;
-        Image image = getRandomPokemonByValue(value).getImage();
         g2.translate(xPos - offset, yPos - offset);
-        g2.drawImage(image, 0, 0, (int)offset * 5, (int)offset * 5,this);
+
+        // Draw pokemon with frames smooth
+        AnimatedGif animatedGif = getRandomPokemonByValue(value);
+        BufferedImage currentFrame = animatedGif.getCurrentFrame();
+        g2.drawImage(currentFrame, 0, 0, (int)offset * 5, (int)offset * 5,this);
+
         g2.setPaint(color);
         g2.setPaint(Color.black);
 
@@ -302,6 +346,7 @@ public class PanelGraph extends JPanel {
         g2d.drawString(text, (float) x, (float) y);
         g2.dispose();
     }
+
     void paintPoint3(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2) {
         Graphics2D g2 = (Graphics2D) g2d.create();
 

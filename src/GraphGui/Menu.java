@@ -31,6 +31,7 @@ public class Menu extends JPanel {
         btn.setBorderPainted(false);
         btn.setFocusPainted(false);
         btn.setRolloverIcon(new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/frame_b.gif"))));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         add(btn, gbc);
         btn.addActionListener(e -> {
             setPlayButtonState(true);

@@ -42,12 +42,20 @@ public class GameEngine implements Runnable {
     public void run() {
         StageController stageController = new StageController(client);
         world = new FrameGraph(stageController.getMap(), stageController);
-        world.PlayButtonPressed(false);
+        try {
+            world.PlayButtonPressed(false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         while(!world.getPlayButtonState()){
             Thread.onSpinWait();
         }
-        world.PlayButtonPressed(true);
+        try {
+            world.PlayButtonPressed(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         client.start();
         intialTime = 1 + (Integer.parseInt(client.timeToEnd())/1000);
 

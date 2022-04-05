@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 
 public class FrameGraph extends JFrame implements ActionListener {
@@ -50,7 +51,7 @@ public class FrameGraph extends JFrame implements ActionListener {
      * This method navigate between panels, to switch between the login panel to the stage panel.
      * @param flag
      */
-    public void PlayButtonPressed(boolean flag){
+    public void PlayButtonPressed(boolean flag) throws IOException {
         if (!flag){
             this.menuPanel = new Menu();
             this.setLocationRelativeTo(null);
