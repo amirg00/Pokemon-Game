@@ -2,6 +2,7 @@ package GraphGui;
 
 import api.DirectedWeightedGraph;
 import api.EdgeData;
+import api.GeoLocation;
 import api.NodeData;
 import ex4_java_client.Agent;
 import ex4_java_client.Pokemon;
@@ -36,6 +37,7 @@ public class PanelGraph extends JPanel {
     // GIFS:
     private final ImageIcon[] gifs = new ImageIcon[]{
             new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/AshRunner.gif"))),
+            new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/AshRunner_Right.gif"))),
             new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Bulbasaur.gif"))),
             new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Charmander.gif"))),
             new ImageIcon(Objects.requireNonNull(getClass().getResource("/GraphGui/Icons/Squirtle.gif"))),
@@ -225,7 +227,7 @@ public class PanelGraph extends JPanel {
         while(i < ag.size()){
            if(ag.get(i).getPos() != null){
                GraphPoint agent = new GraphPoint("Agent "+String.valueOf(i) + " (" + ag.get(i).getValue()+")",new Point2D.Double(ag.get(i).getPos().x(),ag.get(i).getPos().y()),Color.black,Color.black);
-               paintPoint3(g2d,agent,insets,Color.black,Color.black);
+               paintPoint3(g2d,agent,insets,Color.black,Color.black, ag.get(i));
            }
             i++;
         }
@@ -347,7 +349,7 @@ public class PanelGraph extends JPanel {
         g2.dispose();
     }
 
-    void paintPoint3(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2) {
+    void paintPoint3(Graphics2D g2d, GraphPoint gp, double insets, Color color, Color color_2, Agent ag) {
         Graphics2D g2 = (Graphics2D) g2d.create();
 
         Point2D translated = translate(gp, insets);
@@ -356,7 +358,11 @@ public class PanelGraph extends JPanel {
         double offset = radius;
 
         g2.translate(xPos - offset, yPos - offset);
-        Image image = gifs[0].getImage();
+
+        NodeData destNode = this.graph.getNode(ag.getDest());
+        GeoLocation destLocation = destNode.getLocation();
+        Image image = gp.getPoint().getX() < destLocation.x() ? gifs[1].getImage() : gifs[0].getImage();
+
         g2.drawImage(image, 0, -55, (int)offset * 10, (int)offset * 10,this);
         FontMetrics fm = g2d.getFontMetrics();
         String text = gp.getId();

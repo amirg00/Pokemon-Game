@@ -23,6 +23,7 @@ public class Agent {
     private int id, src, dest;
     private double value, speed;
     private GeoLocation pos;
+    private String state;
 
     /******** Constructor *********/
 
@@ -33,6 +34,7 @@ public class Agent {
         this.value = value;
         this.speed = speed;
         this.pos = pos;
+        this.state = "right";
     }
 
     /**
@@ -78,6 +80,8 @@ public class Agent {
         return src;
     }
 
+    public String getState() {return state;}
+
     public void setValue(double value) {
         this.value = value;
     }
@@ -101,4 +105,6 @@ public class Agent {
     public void setSrc(int src) {
         this.src = src;
     }
+
+    public void setState(String state) {this.state = state;}
 }
